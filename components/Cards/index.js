@@ -17,10 +17,24 @@
 // </div>
 //
 // Create a card for each of the articles and add the card to the DOM.
-// const cardHeader = document.querySelector(".cards-container");
+const articleCards = document.querySelector(".cards-container");
 
+axios
+    .get('https://lambda-times-backend.herokuapp.com/articles')
+    .then(response => {
+        console.log(response.data.articles);
+        const mainContainer = Object.entries(response.data.articles);
 
-
+        mainContainer.forEach(subject => {
+            subject[1].forEach(data => {
+                const newCard = Article(data);
+                articleCards.append(newCard);
+            })
+        })
+    })
+    .catch(error => {
+        console.log('the data was not retured', error)
+    });
 
 function Article(data) {
     const card = document.createElement("div"),
